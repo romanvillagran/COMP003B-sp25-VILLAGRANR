@@ -5,12 +5,12 @@ namespace COMP003B_sp25_VILLAGRANR.Data
 {
     public class ApplicationDbContext : DbContext
     {
-        public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
-            : base(options)
-        { }
+        public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : base(options) { }
 
         public DbSet<Customer> Customers { get; set; }
         public DbSet<Vehicle> Vehicles { get; set; }
         public DbSet<Appointment> Appointments { get; set; }
+        public DbSet<Service> Services { get; set; }
+        public DbSet<Payment> Payments { get; set; }
     }
 }
