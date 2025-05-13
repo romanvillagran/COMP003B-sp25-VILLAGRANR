@@ -10,23 +10,22 @@ using COMP003B_sp25_VILLAGRANR.Models;
 
 namespace COMP003B_sp25_VILLAGRANR.Controllers
 {
-    public class AppointmentsController : Controller
+    public class VehiclesController : Controller
     {
         private readonly ApplicationDbContext _context;
 
-        public AppointmentsController(ApplicationDbContext context)
+        public VehiclesController(ApplicationDbContext context)
         {
             _context = context;
         }
 
-        // GET: Appointments
+        // GET: Vehicles
         public async Task<IActionResult> Index()
         {
-            var applicationDbContext = _context.Appointments.Include(a => a.Customer).Include(a => a.Vehicle);
-            return View(await applicationDbContext.ToListAsync());
+            return View(await _context.Vehicles.ToListAsync());
         }
 
-        // GET: Appointments/Details/5
+        // GET: Vehicles/Details/5
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
@@ -34,45 +33,39 @@ namespace COMP003B_sp25_VILLAGRANR.Controllers
                 return NotFound();
             }
 
-            var appointment = await _context.Appointments
-                .Include(a => a.Customer)
-                .Include(a => a.Vehicle)
+            var vehicle = await _context.Vehicles
                 .FirstOrDefaultAsync(m => m.Id == id);
-            if (appointment == null)
+            if (vehicle == null)
             {
                 return NotFound();
             }
 
-            return View(appointment);
+            return View(vehicle);
         }
 
-        // GET: Appointments/Create
+        // GET: Vehicles/Create
         public IActionResult Create()
         {
-            ViewBag.Customers = _context.Customers.ToList();
-            ViewBag.Vehicles = _context.Vehicles.ToList();
             return View();
         }
 
-        // POST: Appointments/Create
+        // POST: Vehicles/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,AppointmentDate,IssueDescription,CustomerId,VehicleId")] Appointment appointment)
+        public async Task<IActionResult> Create([Bind("Id,Make,Model,Year,LicensePlate")] Vehicle vehicle)
         {
             if (ModelState.IsValid)
             {
-                _context.Add(appointment);
+                _context.Add(vehicle);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["CustomerId"] = new SelectList(_context.Customers, "Id", "Address", appointment.CustomerId);
-            ViewData["VehicleId"] = new SelectList(_context.Vehicles, "Id", "Make", appointment.VehicleId);
-            return View(appointment);
+            return View(vehicle);
         }
 
-        // GET: Appointments/Edit/5
+        // GET: Vehicles/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -80,24 +73,22 @@ namespace COMP003B_sp25_VILLAGRANR.Controllers
                 return NotFound();
             }
 
-            var appointment = await _context.Appointments.FindAsync(id);
-            if (appointment == null)
+            var vehicle = await _context.Vehicles.FindAsync(id);
+            if (vehicle == null)
             {
                 return NotFound();
             }
-            ViewData["CustomerId"] = new SelectList(_context.Customers, "Id", "Address", appointment.CustomerId);
-            ViewData["VehicleId"] = new SelectList(_context.Vehicles, "Id", "Make", appointment.VehicleId);
-            return View(appointment);
+            return View(vehicle);
         }
 
-        // POST: Appointments/Edit/5
+        // POST: Vehicles/Edit/5
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,AppointmentDate,IssueDescription,CustomerId,VehicleId")] Appointment appointment)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,Make,Model,Year,LicensePlate")] Vehicle vehicle)
         {
-            if (id != appointment.Id)
+            if (id != vehicle.Id)
             {
                 return NotFound();
             }
@@ -106,12 +97,12 @@ namespace COMP003B_sp25_VILLAGRANR.Controllers
             {
                 try
                 {
-                    _context.Update(appointment);
+                    _context.Update(vehicle);
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!AppointmentExists(appointment.Id))
+                    if (!VehicleExists(vehicle.Id))
                     {
                         return NotFound();
                     }
@@ -122,12 +113,10 @@ namespace COMP003B_sp25_VILLAGRANR.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["CustomerId"] = new SelectList(_context.Customers, "Id", "Address", appointment.CustomerId);
-            ViewData["VehicleId"] = new SelectList(_context.Vehicles, "Id", "Make", appointment.VehicleId);
-            return View(appointment);
+            return View(vehicle);
         }
 
-        // GET: Appointments/Delete/5
+        // GET: Vehicles/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
@@ -135,36 +124,34 @@ namespace COMP003B_sp25_VILLAGRANR.Controllers
                 return NotFound();
             }
 
-            var appointment = await _context.Appointments
-                .Include(a => a.Customer)
-                .Include(a => a.Vehicle)
+            var vehicle = await _context.Vehicles
                 .FirstOrDefaultAsync(m => m.Id == id);
-            if (appointment == null)
+            if (vehicle == null)
             {
                 return NotFound();
             }
 
-            return View(appointment);
+            return View(vehicle);
         }
 
-        // POST: Appointments/Delete/5
+        // POST: Vehicles/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var appointment = await _context.Appointments.FindAsync(id);
-            if (appointment != null)
+            var vehicle = await _context.Vehicles.FindAsync(id);
+            if (vehicle != null)
             {
-                _context.Appointments.Remove(appointment);
+                _context.Vehicles.Remove(vehicle);
             }
 
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
-        private bool AppointmentExists(int id)
+        private bool VehicleExists(int id)
         {
-            return _context.Appointments.Any(e => e.Id == id);
+            return _context.Vehicles.Any(e => e.Id == id);
         }
     }
 }
