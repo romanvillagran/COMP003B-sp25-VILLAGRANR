@@ -15,6 +15,7 @@ namespace COMP003B_sp25_VILLAGRANR.Models
         public string Address { get; set; }
 
         [Phone]
+        [Required]
         public string PhoneNumber { get; set; }
 
         [Required]
