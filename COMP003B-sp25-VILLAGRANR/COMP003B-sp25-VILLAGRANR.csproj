@@ -5,6 +5,7 @@
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
     <RootNamespace>COMP003B_sp25_VILLAGRANR</RootNamespace>
+    <UserSecretsId>05588aa8-7d33-4ab9-9eb0-2c7b3b2285da</UserSecretsId>
   </PropertyGroup>
 
   <ItemGroup>

@@ -1,3 +1,6 @@
+using COMP003B_sp25_VILLAGRANR.Data;
+using Microsoft.EntityFrameworkCore;
+
 namespace COMP003B_sp25_VILLAGRANR
 {
     public class Program
@@ -8,6 +11,11 @@ namespace COMP003B_sp25_VILLAGRANR
 
             // Add services to the container.
             builder.Services.AddControllersWithViews();
+
+            builder.Services.AddDbContext<ApplicationDbContext>(options =>
+                options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
+
+
 
             var app = builder.Build();
 
